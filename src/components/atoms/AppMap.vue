@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
+import { defineEmits } from "vue";
 
-defineProps<{ prop: number }>();
 defineEmits<{
   (e: "update", value: string): void;
 }>();
 </script>
 
 <template>
-  <div class="map"></div>
+  <div id="map" class="map">Loading map ...</div>
 </template>
 
 <style scoped>
@@ -18,5 +17,10 @@ defineEmits<{
   height: 100%;
   max-width: 1000px;
   background-color: black;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
 }
 </style>

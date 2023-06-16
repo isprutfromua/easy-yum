@@ -8,13 +8,32 @@ import {
   AppDistanceInfo,
   AppDistanceModes,
 } from "./components";
-import { defineProps } from "vue";
+import { defineProps, ref, onMounted, toValue, toRaw } from "vue";
+import { useGoogleMaps } from "@/composables/useGoogleMaps";
+import { getUserGeolocation } from "./helpers/geolocation";
+const center = ref();
+const error = ref();
+
+const { map, injectMap, placeMarker } = useGoogleMaps();
 
 defineProps({});
 
 const setPriceFilter = (count: number) => {
   console.log(count);
 };
+
+onMounted(() => {
+  getUserGeolocation()
+    .then(async (coords) => {
+      center.value = coords;
+
+      await injectMap(center, error);
+      await placeMarker(center);
+    })
+    .catch((err) => {
+      error.value = err;
+    });
+});
 </script>
 
 <template>
