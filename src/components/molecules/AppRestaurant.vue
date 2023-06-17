@@ -48,7 +48,7 @@ const placePhoto = computed(() => {
   margin-bottom: 5px;
   border-radius: 20px;
   cursor: pointer;
-  width: 450px;
+  width: 430px;
 }
 
 .app-restaurant__image {

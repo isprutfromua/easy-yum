@@ -18,7 +18,7 @@ interface TDistanceInfo {
 }
 
 const isLoading = ref(false);
-
+const error = ref(false);
 const { getDistance } = useGoogleMaps();
 const emit = defineEmits<{
   (e: "mode:update", value: string): void;
@@ -38,15 +38,16 @@ const calculateDistance = async () => {
     let mode: keyof typeof google.maps.TravelMode;
 
     for (mode in google.maps.TravelMode) {
-      const { routes: distanceInfo } = await getDistance(
-        props.destination.location,
-        mode
-      );
+      const distanceInfo = await getDistance(props.destination.location, mode);
 
-      routes[mode] = {
-        duration: distanceInfo[0].legs[0].duration?.text ?? "",
-        distance: distanceInfo[0].legs[0].distance?.text ?? "",
-      };
+      if (distanceInfo) {
+        routes[mode] = {
+          duration: distanceInfo.routes[0].legs[0].duration?.text ?? "",
+          distance: distanceInfo.routes[0].legs[0].distance?.text ?? "",
+        };
+      } else {
+        error.value = true;
+      }
     }
     isLoading.value = false;
   }
@@ -62,20 +63,25 @@ const setMode = (mode: keyof typeof google.maps.TravelMode) => {
 </script>
 
 <template>
-  <div class="app-distance__info">
-    <p>Distance</p>
-    <span>{{ isLoading ? "calculating..." : distance }}</span>
+  <div v-if="!error">
+    <div class="app-distance__info">
+      <p>Distance</p>
+      <span>{{ isLoading ? "calculating..." : distance }}</span>
+    </div>
+    <div class="app-distance__modes" v-if="!isLoading">
+      <AppDistanceMode
+        :class="{ 'is-active': mode === currentMode }"
+        v-for="mode in Object.keys(routes)"
+        :key="mode"
+        :type="mode"
+        :duration="routes[mode].duration"
+        @click="setMode(mode)"
+      />
+    </div>
   </div>
-  <div class="app-distance__modes" v-if="!isLoading">
-    <AppDistanceMode
-      :class="{ 'is-active': mode === currentMode }"
-      v-for="mode in Object.keys(routes)"
-      :key="mode"
-      :type="mode"
-      :duration="routes[mode].duration"
-      @click="setMode(mode)"
-    />
-  </div>
+  <p v-else style="margin-block: 1rem; font-size: 1.1rem">
+    We cant support this route. Please change your location
+  </p>
 </template>
 
 <style lang="css" scoped>

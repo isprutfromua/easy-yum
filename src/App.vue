@@ -99,13 +99,9 @@ const handleInputSubmit = async (query: string) => {
 };
 
 onMounted(() => {
-  console.log("App mounted");
-
   getUserGeolocation()
     .then(async (coords) => {
       center.value = coords;
-
-      console.log("Coords received");
 
       await injectMap(center, error);
       await placeMarker(center.value, {
@@ -125,8 +121,6 @@ watch(filteredRestaurants, (updatedRestaurants) => {
   updatedRestaurants.forEach((m, i) => {
     const pr = new Promise<void>((res) => {
       setTimeout(async () => {
-        console.log(m);
-
         const markerCoordinates = {
           latitude: m.geometry?.location?.lat(),
           longitude: m.geometry?.location?.lng(),
@@ -214,7 +208,8 @@ const draw = () => {
     state.openedRestaurant?.geometry.location,
     currentMode.value
   ).then((routes) => {
-    drawDirection(routes);
+    if (routes) drawDirection(routes);
+    else alert("Failed to build routes");
   });
 };
 </script>

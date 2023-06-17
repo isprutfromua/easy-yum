@@ -62,10 +62,6 @@ export function useGoogleMaps() {
       coords.value.longitude
     );
 
-    console.log("Map initialization");
-
-    console.log(center.value);
-
     const mapOptions: google.maps.MapOptions = {
       center: center.value,
       zoom: 14,
@@ -144,15 +140,23 @@ export function useGoogleMaps() {
       throw new Error(`Coordinates isn't available. Please try again`);
     }
 
-    const directionService = new RoutesLibrary.value.DirectionsService();
+    try {
+      const directionService = new RoutesLibrary.value.DirectionsService();
 
-    const result: google.maps.DirectionsResult = await directionService.route({
-      origin: center.value,
-      travelMode: google.maps.TravelMode[mode],
-      destination,
-    });
+      const result: google.maps.DirectionsResult = await directionService.route(
+        {
+          origin: center.value,
+          travelMode: google.maps.TravelMode[mode],
+          destination,
+        }
+      );
 
-    return result;
+      return result;
+    } catch (e) {
+      console.log("Failed to get routes", e);
+    }
+
+    return null;
   }
 
   function drawDirection(directions: google.maps.DirectionsResult | null) {
