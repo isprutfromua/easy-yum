@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { AppLogo, AppInput } from "@/components";
 import { IconSearch } from "@/components/icons";
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 
 const searchQuery = ref("");
+const emit = defineEmits<{
+  (e: "submit:value", value: string): void;
+}>();
+
 const handleSubmit = () => {
-  console.log(searchQuery.value);
+  emit("submit:value", searchQuery.value);
+  searchQuery.value = "";
 };
 const handleValueUpdate = (newVal: string) => (searchQuery.value = newVal);
 </script>

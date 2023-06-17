@@ -13,9 +13,8 @@ defineEmits<{
 <style scoped>
 .map {
   border-radius: 40px;
-  width: 100%;
+  width: calc(100% - 470px);
   height: 100%;
-  max-width: 1000px;
   background-color: black;
   color: #ffffff;
   display: flex;

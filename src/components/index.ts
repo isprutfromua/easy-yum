@@ -7,7 +7,6 @@ import AppDistanceInfo from "./atoms/AppDistanceInfo.vue";
 import AppDistanceMode from "./atoms/AppDistanceMode.vue";
 import AppHeader from "./molecules/AppHeader.vue";
 import AppRestaurant from "./molecules/AppRestaurant.vue";
-import AppDistanceModes from "./molecules/AppDistanceModes.vue";
 
 export {
   AppLogo,
@@ -19,5 +18,4 @@ export {
   AppFilterButton,
   AppDistanceMode,
   AppDistanceInfo,
-  AppDistanceModes,
 };

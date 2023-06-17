@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <button type="button">Build a route</button>
+  <button type="button"><slot>Build a route</slot></button>
 </template>
 
 <style lang="css" scoped>

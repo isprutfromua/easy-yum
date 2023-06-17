@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, computed } from "vue";
 const props = defineProps<{
-  type: "DRIVING" | "BICYCLING" | "TRANSIT" | "WALKING";
+  type: google.maps.TravelMode;
   duration: string;
 }>();
 
@@ -22,7 +22,13 @@ const imageSrc = computed(() =>
   font-size: 16px;
   line-height: 19px;
   text-align: center;
+  padding: 16px;
+  border-radius: 16px;
 
   color: rgba(34, 34, 34, 0.35);
+}
+
+.app-distance__mode.is-active {
+  background-color: aliceblue;
 }
 </style>

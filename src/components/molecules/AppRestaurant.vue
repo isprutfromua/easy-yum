@@ -1,21 +1,36 @@
 <script setup lang="ts">
 import { IconStar } from "@/components/icons";
+import { defineProps, computed } from "vue";
+const props = defineProps<{
+  restaurant: google.maps.places.PlaceResult;
+}>();
+
+const placePhoto = computed(() => {
+  return props.restaurant.photos?.at(0)?.getUrl({ maxWidth: 360 });
+});
 </script>
 
 <template>
   <section class="app-restaurant">
     <img
       class="app-restaurant__image"
-      src="restaurant.photoUrl"
-      alt="restaurant.name"
+      :src="placePhoto"
+      :alt="restaurant.name"
+      width="360"
+      height="230"
+      v-if="placePhoto"
     />
-    <h2 class="app-restaurant__name">name</h2>
+    <h2 class="app-restaurant__name">{{ restaurant.name }}</h2>
     <span class="app-restaurant__rating">
       <IconStar />
-      rating
+      {{ restaurant.rating }}
     </span>
-    <address class="app-restaurant__address">formatted_address</address>
-    <span class="app-restaurant__price">$</span>
+    <address class="app-restaurant__address">
+      {{ restaurant.formatted_address }}
+    </address>
+    <span class="app-restaurant__price" v-if="restaurant.price_level">{{
+      "$".repeat(restaurant.price_level)
+    }}</span>
     <div class="app-restaurant__content">
       <slot />
     </div>
@@ -28,9 +43,12 @@ import { IconStar } from "@/components/icons";
   border: 1px solid #d7e6f0;
   display: grid;
   grid-template-columns: 1fr max-content;
+  align-content: start;
   row-gap: 5px;
   margin-bottom: 5px;
   border-radius: 20px;
+  cursor: pointer;
+  width: 450px;
 }
 
 .app-restaurant__image {
@@ -39,7 +57,7 @@ import { IconStar } from "@/components/icons";
   border-radius: 20px;
   grid-column: 1 / span 2;
   background-color: #d7e6f0;
-  aspect-ratio: 16 / 9;
+  width: 100%;
 }
 
 .app-restaurant__name {
