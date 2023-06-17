@@ -339,7 +339,7 @@ select {
   margin-inline: auto;
   padding-inline: 16px;
   padding-block: 24px;
-  width: min(1385px, 100vw);
+  width: min(1560px, 100vw);
   flex-grow: 1;
 }
 

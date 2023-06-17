@@ -100,7 +100,7 @@ const setMode = (mode: keyof typeof google.maps.TravelMode) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 16px;
+  column-gap: 4px;
   margin-top: 16px;
   height: 100px;
 }
