@@ -82,11 +82,15 @@ export function useGoogleMaps() {
   }
 
   async function placeMarker(
-    coords: GeolocationCoordinates,
+    coords: Partial<GeolocationCoordinates>,
     options?: Partial<google.maps.MarkerOptions>
   ) {
     if (!CoreLibrary.value || !MarkerLibrary.value) {
       throw new Error("Libraries isn`t available");
+    }
+
+    if (!coords.latitude || !coords.latitude) {
+      throw new Error("Coordinates isn`t available");
     }
 
     return new MarkerLibrary.value.Marker({

@@ -6,13 +6,12 @@ import {
   reactive,
   ref,
   computed,
-  onUnmounted,
   watch,
 } from "vue";
 import { useGoogleMaps } from "@/composables/useGoogleMaps";
 import { AppDistanceMode } from "@/components";
 
-interface TDistanceInfo {
+interface DistanceInfo {
   duration: string;
   distance: string;
 }
@@ -20,13 +19,17 @@ interface TDistanceInfo {
 const isLoading = ref(false);
 const error = ref(false);
 const { getDistance } = useGoogleMaps();
+
 const emit = defineEmits<{
   (e: "mode:update", value: string): void;
 }>();
 const props = defineProps<{
   destination: google.maps.places.PlaceGeometry;
 }>();
-const routes = reactive<Record<google.maps.TravelMode, TDistanceInfo>>({});
+
+type TRouteMode = Record<google.maps.TravelMode, DistanceInfo>;
+
+const routes = reactive<TRouteMode>({} as TRouteMode);
 const currentMode = ref<keyof typeof google.maps.TravelMode>(
   google.maps.TravelMode.WALKING
 );
@@ -74,8 +77,8 @@ const setMode = (mode: keyof typeof google.maps.TravelMode) => {
         v-for="mode in Object.keys(routes)"
         :key="mode"
         :type="mode"
-        :duration="routes[mode].duration"
-        @click="setMode(mode)"
+        :duration="routes[mode as keyof typeof routes].duration"
+        @click="setMode(mode as keyof typeof routes)"
       />
     </div>
   </div>

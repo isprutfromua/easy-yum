@@ -148,9 +148,10 @@ watch(filteredRestaurants, (updatedRestaurants) => {
         });
         infoWindow.setContent(
           `<div class="app-info-window">
-            <img class="app-info-window__image" src="${filteredRestaurants.value[
-              id
-            ]?.photos[0].getUrl({ maxWidth: 120 })}" width="70" height="70">
+            <img class="app-info-window__image" src="
+            ${filteredRestaurants.value[id].photos?.[0].getUrl({
+              maxWidth: 120,
+            })}" width="70" height="70">
             <div class="app-info-window__details">
               <span class="app-info-window__name">${
                 filteredRestaurants.value[id].name
@@ -172,12 +173,14 @@ watch(filteredRestaurants, (updatedRestaurants) => {
         state.openedRestaurant = filteredRestaurants.value[id];
       });
 
-      window.google.maps.event.addListener(map.value, "click", () => {
-        if (state.openedWindow) {
-          state.openedWindow.close();
-          state.openedRestaurant = null;
-        }
-      });
+      if (map.value) {
+        window.google.maps.event.addListener(map.value, "click", () => {
+          if (state.openedWindow) {
+            state.openedWindow.close();
+            state.openedRestaurant = null;
+          }
+        });
+      }
     });
 
     const firstMarkerPosition = state.markers[0]?.getPosition() ?? null;
