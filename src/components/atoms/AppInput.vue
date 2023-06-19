@@ -40,6 +40,11 @@ input {
   min-width: 300px;
 }
 
+input:focus,
+input:focus-visible {
+  outline: none;
+}
+
 .input__wrapper {
   display: flex;
   align-items: center;

@@ -168,6 +168,8 @@ watch(filteredRestaurants, (updatedRestaurants) => {
         if (state.openedWindow) state.openedWindow.close();
 
         infoWindow.open(map.value, marker);
+        map.value?.setCenter(marker.getPosition());
+        map.value?.setZoom(16);
 
         state.openedWindow = infoWindow;
         state.openedRestaurant = filteredRestaurants.value[id];
@@ -193,6 +195,7 @@ watch(filteredRestaurants, (updatedRestaurants) => {
 });
 
 const selectRestaurant = (id: number | null) => {
+  window.google.maps.event.trigger(state.markers[id], "click");
   state.openedRestaurant =
     typeof id === "number" ? filteredRestaurants.value[id] : null;
 };
